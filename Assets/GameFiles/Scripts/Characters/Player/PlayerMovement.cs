@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,63 +10,79 @@ public class PlayerMovement : MonoBehaviour
     public float rotationSpeed = 10;
     public bool onGround = false;
     //private variables
-    private Rigidbody playerRigidBody;
+    [SerializeField]private Rigidbody playerRigidBody;
     private Vector3 moveInput;
     private Vector3 moveVelocity;
     private Camera mainCamera;
+    private Entity _entity;
+
 
 
     private void Start()
     {
         playerRigidBody = GetComponent<Rigidbody>();
+        _entity = GetComponent<Entity>();
         mainCamera = Camera.main;
+
+
     }
 
 
     private void Update()
     {
-        //basic Movement
-        moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        moveVelocity = moveInput * moveSpeed;
-
-        Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-
-        float rayLength;
-        if(groundPlane.Raycast(cameraRay, out rayLength))
+        if (_entity.isPossesed)
         {
-            Vector3 pointToLookAt = cameraRay.GetPoint(rayLength);
-           // Debug.DrawLine(mainCamera.transform.position, pointToLookAt);
-            transform.LookAt(new Vector3(pointToLookAt.x, transform.position.y, pointToLookAt.z));
-        }
+            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+            //basic Movement
+            moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            moveVelocity = moveInput * moveSpeed;
 
-        Ray floorColllisionCheck = new Ray(new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z), Vector3.down);
-        RaycastHit floorHit;
-        if(Physics.Raycast(floorColllisionCheck, out floorHit, 1.2f))
-        {
-            
-            if (floorHit.collider.CompareTag("Ground"))
+            Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+            float rayLength;
+            if (groundPlane.Raycast(cameraRay, out rayLength))
             {
-                onGround = true;
-               
+                Vector3 pointToLookAt = cameraRay.GetPoint(rayLength);
+                // Debug.DrawLine(mainCamera.transform.position, pointToLookAt);
+                transform.LookAt(new Vector3(pointToLookAt.x, transform.position.y, pointToLookAt.z));
             }
-        }
-        else
-        {
-            onGround = false;
-        }
 
+            Ray floorColllisionCheck = new Ray(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down);
+            RaycastHit floorHit;
+            if (Physics.Raycast(floorColllisionCheck, out floorHit, 1.2f))
+            {
 
-        if (!onGround)
-        {
-            Vector3 grav = new Vector3(0f, -9.8f, 0f);
-            moveVelocity = moveVelocity + grav;
+                if (floorHit.collider.CompareTag("Ground"))
+                {
+                    onGround = true;
+
+                }
+            }
+            else
+            {
+                onGround = false;
+            }
+
         }
+ 
     }
 
     private void FixedUpdate()
     {
-        playerRigidBody.velocity = moveVelocity;
+        IsOnGround();
+        playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
+
     }
 
+    private void IsOnGround()
+    {
+        if (!onGround)
+        {
+            Vector3 grav = new Vector3(0f, -9.8f, 0f);
+            moveVelocity = playerRigidBody.velocity + grav;
+        }
+    }
+
+    
 }

@@ -29,4 +29,18 @@ public class Projectile : MonoBehaviour
         }
        
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+
+         if (other.gameObject.GetComponentInParent<Entity>())
+        {
+            other.gameObject.GetComponentInParent<Entity>().OnHit(damage);
+
+        }
+
+
+        Destroy(gameObject);
+    }
+    
 }

@@ -26,10 +26,8 @@ public class Gun : MonoBehaviour
         timer += Time.deltaTime;
         if(timer  >= 60 / fireRate && isFiring)
         {
-            Debug.Log("Firing");
             if (Instantiate(projectile, muzzelTransform.position, muzzelTransform.rotation)) 
             {
-                Debug.Log("projectile instantiated");
             }
             timer = 0f;
         }

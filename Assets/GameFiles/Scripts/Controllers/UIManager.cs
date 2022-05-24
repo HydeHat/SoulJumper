@@ -308,7 +308,7 @@ public class UIManager : Singleton<UIManager>
         _instrutionsObject.SetActive(false);
         _inGameMenuObject.SetActive(false);
         GameManager.Instance.UnloadLevel("Main");
-        _gameOverGoldText.text = "Total Gold Collected was: " + GameResources._finalGold;
+
 
         
     }

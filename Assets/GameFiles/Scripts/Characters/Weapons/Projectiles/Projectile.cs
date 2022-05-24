@@ -33,9 +33,9 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
 
-         if (other.gameObject.GetComponentInParent<Entity>())
+        if (other.gameObject.GetComponent<Entity>())
         {
-            other.gameObject.GetComponentInParent<Entity>().OnHit(damage);
+            other.gameObject.GetComponent<Entity>().OnHit(damage);
 
         }
 

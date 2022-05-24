@@ -13,12 +13,7 @@ public static class GameResources
         UI
     }
 
-    public enum pickupType
-    {
-      Gold = 0, 
-      Explosive = 1,
-      Empty = 2
-    }
+
 
     public enum uiGroupName
     {
@@ -29,15 +24,12 @@ public static class GameResources
         INGAME
     }
 
-    public enum PowerUpType
-    {
-        LIFE = 0,
-        DUALGUN = 1,
-        TRIPPLEGUN = 2
-    }
+    public static List<GameObject> entities = new List<GameObject>();
 
-    public static int _finalLevel { get; set; }
-    public static int _finalGold { get; set; }
+    public static Transform playerTransform { get; set; }
+    public static Player _player { get; set; }
+    
+    public static int nunberOfEntities { get; set; }
 
     public static Vector3 playerStartPos = new Vector3(100, 20, 30);
     

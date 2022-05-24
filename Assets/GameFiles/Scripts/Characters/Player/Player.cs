@@ -32,11 +32,16 @@ public class Player : Singleton<Player>
     {
         _event = Events.Instance;
         _firstEntity.SetPossesed(true);
+        GameResources.playerTransform = _firstEntity.transform;
+        _currentEntityTransform = _firstEntity.transform;
+        _currentPossesedEntity = _firstEntity;
+        GameResources._player = this;
 
     }
 
     private void Update()
     {
+        
         if (Input.GetMouseButton(0))
         {
             gun.SetFiring(true);
@@ -54,10 +59,11 @@ public class Player : Singleton<Player>
 
     private void JumpToNewBody()
     {
-        
+        Debug.Log("Jump To new Body Called");
+        Debug.Log("number of entities" + GameResources.nunberOfEntities);
         float closestDistance = 10000000000000000f;
-        GameObject[] entities = GameObject.FindGameObjectsWithTag("Entity");
-        foreach (GameObject obj in entities)
+        
+        foreach (GameObject obj in GameResources.entities)
         {
             if (obj != entity)
             {
@@ -70,9 +76,13 @@ public class Player : Singleton<Player>
             }
         }
 
+        Entity oldEntity = _currentPossesedEntity;
+
         _currentPossesedEntity = _closestEntity.GetComponent<Entity>();
-        _currentPossesedEntity.isPossesed = true;
+        _currentPossesedEntity.SetPossesed(true);
         _currentEntityTransform = _closestEntity.transform;
+        GameResources.playerTransform = _currentEntityTransform;
+        oldEntity.DestroyMe();
         gun = _currentPossesedEntity.ReturnGun();
 
     }

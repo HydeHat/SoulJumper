@@ -167,7 +167,6 @@ GameObject:
   - component: {fileID: 176263421}
   - component: {fileID: 176263420}
   - component: {fileID: 176263419}
-  - component: {fileID: 176263418}
   m_Layer: 0
   m_Name: gun
   m_TagString: Untagged
@@ -191,24 +190,6 @@ Transform:
   m_Father: {fileID: 865012167}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &176263418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 176263416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
-  _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
-  isPossesed: 0
 --- !u!114 &176263419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,7 +402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0a1b5805fedc84cbf3725f352b87df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 682982063}
   cameraOffset: {x: 0, y: 10, z: 0}
 --- !u!1 &353683415
 GameObject:
@@ -660,7 +640,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  _player: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -718,11 +697,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
+  _hitPointsRemaing: 20
   _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
   isPossesed: 0
 --- !u!136 &509197917
 CapsuleCollider:
@@ -1044,7 +1020,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  _player: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -1102,11 +1077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
+  _hitPointsRemaing: 20
   _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
   isPossesed: 0
 --- !u!136 &795615509
 CapsuleCollider:
@@ -1306,11 +1278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
+  _hitPointsRemaing: 100
   _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 128
   isPossesed: 0
 --- !u!195 &824929497
 NavMeshAgent:
@@ -1347,7 +1316,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  _player: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -1889,7 +1857,6 @@ GameObject:
   - component: {fileID: 1406337237}
   - component: {fileID: 1406337236}
   - component: {fileID: 1406337235}
-  - component: {fileID: 1406337234}
   m_Layer: 0
   m_Name: gun
   m_TagString: Untagged
@@ -1913,24 +1880,6 @@ Transform:
   m_Father: {fileID: 353683416}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1406337234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1406337232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
-  _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
-  isPossesed: 0
 --- !u!114 &1406337235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2071,7 +2020,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 0}
-  _player: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -2129,11 +2077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
+  _hitPointsRemaing: 20
   _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
   isPossesed: 0
 --- !u!136 &1451506571
 CapsuleCollider:
@@ -2229,7 +2174,6 @@ GameObject:
   - component: {fileID: 1515460755}
   - component: {fileID: 1515460754}
   - component: {fileID: 1515460753}
-  - component: {fileID: 1515460752}
   m_Layer: 0
   m_Name: gun
   m_TagString: Untagged
@@ -2253,24 +2197,6 @@ Transform:
   m_Father: {fileID: 1050873172}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1515460752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515460750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
-  _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
-  isPossesed: 0
 --- !u!114 &1515460753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2365,7 +2291,6 @@ GameObject:
   - component: {fileID: 1539892516}
   - component: {fileID: 1539892515}
   - component: {fileID: 1539892513}
-  - component: {fileID: 1539892518}
   m_Layer: 0
   m_Name: gun
   m_TagString: Untagged
@@ -2470,24 +2395,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539892512}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1539892518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1539892512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitPointsRemaing: 0
-  _speed: 0
-  _playerLayermask:
-    serializedVersion: 2
-    m_Bits: 0
-  isPossesed: 0
 --- !u!1 &1580617631
 GameObject:
   m_ObjectHideFlags: 0

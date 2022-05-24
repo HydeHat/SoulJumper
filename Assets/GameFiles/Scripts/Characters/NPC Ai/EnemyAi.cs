@@ -7,7 +7,7 @@ public class EnemyAi : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
 
-    [SerializeField] private Transform _player;
+
 
     public LayerMask whatIsGround, whatIsPlayer;
 
@@ -30,7 +30,7 @@ public class EnemyAi : MonoBehaviour
 
     private void Awake()
     {
-        _player = GameObject.FindObjectOfType<Player>().transform;
+
         _agent = GetComponent<NavMeshAgent>();
         _gun = GetComponentInChildren<Gun>();
         _entity = GetComponentInChildren<Entity>().gameObject;
@@ -54,18 +54,23 @@ public class EnemyAi : MonoBehaviour
             //check for sight and attack range
             _playerInSightRange = Physics.CheckSphere(transform.position, _sightRange, whatIsPlayer);
             _playerInAttackingRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
-
-            Vector3 direction = _player.position - transform.position;
-            if (_playerInSightRange)
+            if (GameResources.playerTransform != null)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, 30f))
-                {
-                    if (hit.collider.GetComponent<Entity>().isPossesed)
-                    {
-                        _playerVisible = true;
-                    }
+                Vector3 direction = GameResources.playerTransform.position - transform.position;
 
+                if (_playerInSightRange)
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, 30f))
+                    {
+                        if (hit.collider.GetComponent<Entity>())
+                        {
+                            if (hit.collider.GetComponent<Entity>().isPossesed)
+                            {
+                                _playerVisible = true;
+                            }
+                        }
+                    }
                 }
             }
             if (!_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
@@ -111,7 +116,7 @@ public class EnemyAi : MonoBehaviour
     {
         
         _agent.isStopped = false;
-        _agent.SetDestination(_player.position);
+        _agent.SetDestination(GameResources.playerTransform.position);
         _gun.SetFiring(false);
 
     }
@@ -119,7 +124,7 @@ public class EnemyAi : MonoBehaviour
     private void AttackPlayer()
     {
         _agent.isStopped = true;
-        Vector3 lookDirection = new Vector3(_player.position.x, transform.position.y, _player.position.z);
+        Vector3 lookDirection = new Vector3(GameResources.playerTransform.position.x, transform.position.y, GameResources.playerTransform.position.z);
         transform.LookAt(lookDirection);
 
         _gun.SetFiring(true);

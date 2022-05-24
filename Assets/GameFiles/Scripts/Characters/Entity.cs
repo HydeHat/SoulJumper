@@ -8,12 +8,12 @@ public class Entity : MonoBehaviour
     [Header("Character stats")]
     [SerializeField] private int _hitPointsRemaing;
     [SerializeField] public int _speed;
-    [SerializeField] private LayerMask _playerLayermask;
 
     private Gun _gun;
     private EnemyAi _enemyAi;
     private Rigidbody _rb;
-    private Player _player;
+    private int _entityIndex;
+    
     public bool isPossesed = false;
 
     
@@ -24,8 +24,12 @@ public class Entity : MonoBehaviour
 
         _gun = GetComponentInChildren<Gun>();
         _enemyAi = GetComponent<EnemyAi>();
-        _player = GameObject.FindObjectOfType<Player>();
+         GameResources.entities.Add(gameObject);
+        Debug.Log("Added to entities");
+        _entityIndex = GameResources.nunberOfEntities;
+        GameResources.nunberOfEntities++;
     }
+
 
     public void OnHit(int damage)
     {
@@ -38,10 +42,11 @@ public class Entity : MonoBehaviour
             }
             else
             {
-                _player.OnDeath();
+                GameResources._player.OnDeath();
             }
         }
     }
+
 
     // Update is called once per frame
     void Update()
@@ -57,7 +62,23 @@ public class Entity : MonoBehaviour
     public void SetPossesed(bool isPos)
     {
         isPossesed = isPos;
-        gameObject.layer = 7;
+        SetGameobjectLayer();
+        Debug.Log(GameResources.entities.Count);
+        GameResources.entities.RemoveAt(_entityIndex);
 
+        Debug.Log(GameResources.entities.Count);
+        GameResources.nunberOfEntities--;
+
+    }
+
+    private void SetGameobjectLayer()
+    {
+        LayerMask mask = LayerMask.NameToLayer("whatIsPlayer");
+        gameObject.layer = mask;
+    }
+
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
     }
 }

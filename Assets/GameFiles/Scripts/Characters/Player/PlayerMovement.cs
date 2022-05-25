@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_entity.isPossesed)
+        if (_entity.isPossesed == 1)
         {
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
             //basic Movement

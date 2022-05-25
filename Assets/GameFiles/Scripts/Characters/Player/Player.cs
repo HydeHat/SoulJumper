@@ -31,7 +31,7 @@ public class Player : Singleton<Player>
     private void Start()
     {
         _event = Events.Instance;
-        _firstEntity.SetPossesed(true);
+        _firstEntity.SetPossesed(1);
         GameResources.playerTransform = _firstEntity.transform;
         _currentEntityTransform = _firstEntity.transform;
         _currentPossesedEntity = _firstEntity;
@@ -59,34 +59,44 @@ public class Player : Singleton<Player>
 
     private void JumpToNewBody()
     {
-        Debug.Log("Jump To new Body Called");
-        Debug.Log("number of entities" + GameResources.nunberOfEntities);
         float closestDistance = 10000000000000000f;
-        
         foreach (GameObject obj in GameResources.entities)
         {
-            if (obj != entity)
+            Debug.Log("in loop");
+            if (GameResources.entities.Count > 1)
             {
-                float distance = Vector3.Distance(_currentEntityTransform.position , obj.transform.position);
-                if (distance < closestDistance)
+
+                float distance = Vector3.Distance(_currentEntityTransform.position, obj.transform.position);
+                if (distance <= closestDistance)
                 {
                     closestDistance = distance;
                     _closestEntity = obj;
+
                 }
+
+            }
+            else
+            {
+                _closestEntity = obj;
             }
         }
 
-        Entity oldEntity = _currentPossesedEntity;
+        PossessEntity();
 
+    }
+
+    private void PossessEntity()
+    {
+        Entity oldEntity = _currentPossesedEntity;
         _currentPossesedEntity = _closestEntity.GetComponent<Entity>();
-        _currentPossesedEntity.SetPossesed(true);
+
+        _currentPossesedEntity.SetPossesed(1);
+        _currentPossesedEntity.isPossesed = 1;
         _currentEntityTransform = _closestEntity.transform;
         GameResources.playerTransform = _currentEntityTransform;
         oldEntity.DestroyMe();
         gun = _currentPossesedEntity.ReturnGun();
-
     }
-
 
     public void OnDeath()
     {
@@ -122,11 +132,7 @@ public class Player : Singleton<Player>
         
     }
 
-   /* private void LifeLost() // functions when life los
-    {
-        
-        // needs function for game over when all the lives are lost
-    }*/
+
 
     
 

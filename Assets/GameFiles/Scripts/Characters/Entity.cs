@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
     private Rigidbody _rb;
     private int _entityIndex;
     
-    public bool isPossesed = false;
+    public int isPossesed = 0 ;
 
     
     // Start is called before the first frame update
@@ -25,7 +25,6 @@ public class Entity : MonoBehaviour
         _gun = GetComponentInChildren<Gun>();
         _enemyAi = GetComponent<EnemyAi>();
          GameResources.entities.Add(gameObject);
-        Debug.Log("Added to entities");
         _entityIndex = GameResources.nunberOfEntities;
         GameResources.nunberOfEntities++;
     }
@@ -33,16 +32,19 @@ public class Entity : MonoBehaviour
 
     public void OnHit(int damage)
     {
-        _hitPointsRemaing -= damage;
-        if (_hitPointsRemaing <= 0)
+        if (_hitPointsRemaing > 0)
         {
-            if (!isPossesed)
+            _hitPointsRemaing -= damage;
+            if (_hitPointsRemaing <= 0)
             {
-                _enemyAi.OnDeath();
-            }
-            else
-            {
-                GameResources._player.OnDeath();
+                if (isPossesed == 0)
+                {
+                    _enemyAi.OnDeath();
+                }
+                else
+                {
+                    GameResources._player.OnDeath();
+                }
             }
         }
     }
@@ -59,14 +61,15 @@ public class Entity : MonoBehaviour
         return _gun;
     }
 
-    public void SetPossesed(bool isPos)
+    public void SetPossesed(int isPos)
     {
+        Debug.Log("Is Possesed");
         isPossesed = isPos;
+        Debug.Log(isPossesed);
         SetGameobjectLayer();
-        Debug.Log(GameResources.entities.Count);
+        Debug.Log(isPossesed);
         GameResources.entities.RemoveAt(_entityIndex);
-
-        Debug.Log(GameResources.entities.Count);
+        Debug.Log(isPossesed);
         GameResources.nunberOfEntities--;
 
     }

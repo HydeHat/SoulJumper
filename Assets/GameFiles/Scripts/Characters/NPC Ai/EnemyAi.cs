@@ -14,7 +14,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private int hitPointsRemaining;
 
 
-    private Gun _gun;
+    [SerializeField] private Gun _gun;
     private GameObject _entity;
     private Entity _controlledEntity;
 
@@ -47,7 +47,7 @@ public class EnemyAi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_controlledEntity.isPossesed)
+        if (_controlledEntity.isPossesed == 0)
         {
             gameObject.GetComponent<NavMeshAgent>().enabled = true;
             _playerVisible = false;
@@ -65,7 +65,7 @@ public class EnemyAi : MonoBehaviour
                     {
                         if (hit.collider.GetComponent<Entity>())
                         {
-                            if (hit.collider.GetComponent<Entity>().isPossesed)
+                            if (hit.collider.GetComponent<Entity>().isPossesed == 1)
                             {
                                 _playerVisible = true;
                             }

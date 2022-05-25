@@ -51,18 +51,15 @@ public class Player : Singleton<Player>
             gun.SetFiring(false);
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            JumpToNewBody();
-        }
     }
+
+
 
     private void JumpToNewBody()
     {
         float closestDistance = 10000000000000000f;
         foreach (GameObject obj in GameResources.entities)
         {
-            Debug.Log("in loop");
             if (GameResources.entities.Count > 1)
             {
 
@@ -89,9 +86,7 @@ public class Player : Singleton<Player>
     {
         Entity oldEntity = _currentPossesedEntity;
         _currentPossesedEntity = _closestEntity.GetComponent<Entity>();
-
-        _currentPossesedEntity.SetPossesed(1);
-        _currentPossesedEntity.isPossesed = 1;
+         _currentPossesedEntity.SetPossesed(1);
         _currentEntityTransform = _closestEntity.transform;
         GameResources.playerTransform = _currentEntityTransform;
         oldEntity.DestroyMe();

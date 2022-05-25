@@ -27,6 +27,7 @@ public class EnemyAi : MonoBehaviour
     //states
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private bool _playerInSightRange, _playerInAttackingRange, _playerVisible;
+    private bool _isPatrolling;
 
     private void Awake()
     {
@@ -82,6 +83,7 @@ public class EnemyAi : MonoBehaviour
         }
     }
 
+    //if no enemy in range
     private void Patroling()
     {
         if (!walkPointSet) SearchWalkPoint();
@@ -97,9 +99,11 @@ public class EnemyAi : MonoBehaviour
         {
             walkPointSet = false;
         }
+        _isPatrolling = true;
         _gun.SetFiring(false);
     }
 
+    //Walk Random route
     private void SearchWalkPoint()
     {
         //Calculate range
@@ -112,29 +116,62 @@ public class EnemyAi : MonoBehaviour
             walkPointSet = true;
     }
 
+    //Track enemy
     private void ChasePlayer()
     {
         
         _agent.isStopped = false;
         _agent.SetDestination(GameResources.playerTransform.position);
         _gun.SetFiring(false);
+        _isPatrolling = false;
 
     }
 
+    //Stop and attack the player once in range
     private void AttackPlayer()
     {
         _agent.isStopped = true;
         Vector3 lookDirection = new Vector3(GameResources.playerTransform.position.x, transform.position.y, GameResources.playerTransform.position.z);
         transform.LookAt(lookDirection);
-
+        _isPatrolling = false;
         _gun.SetFiring(true);
     }
 
-
+    //when killed
     public void OnDeath()
     {
         Destroy(gameObject);
     }
 
- 
+    private void FixedUpdate()
+    {
+        if (_controlledEntity.isPossesed == 0)
+        {
+            if (!_agent.isStopped)
+            {
+                if (_controlledEntity._charAnimControl != null)
+                {
+                    if (_isPatrolling)
+                    {
+                        _controlledEntity._charAnimControl.SetBlend(1, 0);
+                    }
+                    else
+                    {
+                        _controlledEntity._charAnimControl.SetBlend(1, 1);
+                    }
+                    Vector3 nextMovePoint = _agent.nextPosition;
+                    _controlledEntity._charAnimControl.PlayAnimation(nextMovePoint);
+                }
+            }
+            else
+            {
+                if (_controlledEntity._charAnimControl != null)
+                {
+                    _controlledEntity._charAnimControl.SetBlend(1, 1);
+                    _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
+                }
+            }
+        }
+    }
+
 }

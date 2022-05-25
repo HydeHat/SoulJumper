@@ -15,5 +15,9 @@ public static class Utills
         return Random.Range(lower, upper);
     }
 
-
+    public static float RemoveSign(float value)
+    {
+        float squared = value * value;
+        return Mathf.Sqrt(squared);
+    }
 }

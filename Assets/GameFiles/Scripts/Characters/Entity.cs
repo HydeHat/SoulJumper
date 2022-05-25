@@ -8,17 +8,21 @@ public class Entity : MonoBehaviour
     [Header("Character stats")]
     [SerializeField] private int _hitPointsRemaing;
     [SerializeField] public int _speed;
+    
+    //Private Variables/ conrollers
 
     private Gun _gun;
     private EnemyAi _enemyAi;
     private Rigidbody _rb;
     private int _entityIndex;
+    public CharAnimControl _charAnimControl;
     
+    //Pulic Variables
     public int isPossesed = 0 ;
 
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 
@@ -27,6 +31,14 @@ public class Entity : MonoBehaviour
          GameResources.entities.Add(gameObject);
         _entityIndex = GameResources.nunberOfEntities;
         GameResources.nunberOfEntities++;
+        if (GetComponentInChildren<CharAnimControl>())
+        {
+            _charAnimControl = GetComponentInChildren<CharAnimControl>();
+        }
+        else
+        {
+            Debug.Log("Character does not have a _charAnimContoller.");
+        }
     }
 
 
@@ -63,15 +75,14 @@ public class Entity : MonoBehaviour
 
     public void SetPossesed(int isPos)
     {
-        Debug.Log("Is Possesed");
         isPossesed = isPos;
-        Debug.Log(isPossesed);
-        SetGameobjectLayer();
-        Debug.Log(isPossesed);
-        GameResources.entities.RemoveAt(_entityIndex);
-        Debug.Log(isPossesed);
-        GameResources.nunberOfEntities--;
 
+        SetGameobjectLayer();
+        if (GameResources.nunberOfEntities > 0)
+        {
+            GameResources.entities.Remove(gameObject);
+            GameResources.nunberOfEntities--;
+        }
     }
 
     private void SetGameobjectLayer()

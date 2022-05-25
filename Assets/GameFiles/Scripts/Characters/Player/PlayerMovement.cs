@@ -32,11 +32,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_entity.isPossesed == 1)
         {
+           
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
             //basic Movement
             moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             moveVelocity = moveInput * moveSpeed;
-
             Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -72,6 +72,13 @@ public class PlayerMovement : MonoBehaviour
     {
         IsOnGround();
         playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
+        if (_entity.isPossesed == 1)
+        {
+            if (_entity._charAnimControl != null)
+            {
+                _entity._charAnimControl.PlayAnimation(moveVelocity);
+            }
+        }
 
     }
 

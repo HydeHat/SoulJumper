@@ -18,24 +18,24 @@ public class Events : Singleton<Events>
     }
 
     // UI hud events 
-    public delegate void PlayerLivesChangedEvent(int Lives);
-    public event PlayerLivesChangedEvent onPlayerLivesChange;
+    public delegate void PlayerHealthChangedEvent(int health);
+    public event PlayerHealthChangedEvent onPlayerHealthChange;
 
-    public void LivesChanged(int lives)
+    public void HealthChanged(int health)
     {
-        if(onPlayerLivesChange != null)
+        if(onPlayerHealthChange != null)
         {
-            onPlayerLivesChange(lives);
+            onPlayerHealthChange(health);
         }
     }
-    public delegate void PlayerGoldChangedEvent(int current, int target);
-    public event PlayerGoldChangedEvent onPlayerGoldChange;
+    public delegate void PlayerJumpChangedEvent(int jump);
+    public event PlayerJumpChangedEvent onPlayerJumpChange;
 
-    public void PlayerGoldChanged(int current, int target)
+    public void PlayerJumpChanged(int jump)
     {
-        if(onPlayerGoldChange != null)
+        if(onPlayerJumpChange != null)
         {
-            onPlayerGoldChange(current, target);
+            onPlayerJumpChange(jump);
         }
     }
 
@@ -62,17 +62,7 @@ public class Events : Singleton<Events>
         }
     }
 
-    //sensor events
-    public delegate void SensorPing();
-    public event SensorPing onSensorPing;
 
-    public void DoSensorPing()
-    {
-        if(onSensorPing != null)
-        {
-            onSensorPing();
-        }
-    }
 
     
     public delegate void SensorStateChange(bool state);

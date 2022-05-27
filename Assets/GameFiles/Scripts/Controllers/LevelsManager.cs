@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelsManager : Singleton<LevelsManager>
 {
-    public Level[] levels;
+
 
     private void Start()
     {
@@ -15,9 +15,6 @@ public class LevelsManager : Singleton<LevelsManager>
     {
 
 
-        if(levels.Length == 0)
-        {
-            levels = gameObject.GetComponents<Level>();
-        }
+
     }
 }

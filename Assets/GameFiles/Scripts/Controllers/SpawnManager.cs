@@ -45,27 +45,6 @@ public class SpawnManager : Singleton<SpawnManager>
         
     }
 
-    public void OnGameOver()  // when the game is over destroy all the pool objects
-    {
-        _gameActive = false;
-       
-    }
-
-   
-    private void LevelChanged(int no)
-    {
-        Debug.Log("Spawn Manager next level called");
-        _gameActive = false;
-    }
-
-
- 
-
-    private void StartNextLevel()
-    {
-        _gameActive = true;
-    }
-
 
     public void SpawnEnemies(SpawnPoint[] spawnPoints)
     {

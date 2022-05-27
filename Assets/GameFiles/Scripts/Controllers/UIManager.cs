@@ -33,9 +33,8 @@ public class UIManager : Singleton<UIManager>
 
     [Space(2)]
     [Header("Hud Variables")]
-    [SerializeField] private TextMeshProUGUI _goldText;
-    [SerializeField] private TextMeshProUGUI _livesText;
-    [SerializeField] private TextMeshProUGUI _sensorText;
+    [SerializeField] private TextMeshProUGUI _jumpText;
+    [SerializeField] private TextMeshProUGUI _healthText;
 
     [Header("Game Over Variables")]
     [SerializeField] private TextMeshProUGUI _gameOverGoldText;
@@ -154,10 +153,14 @@ public class UIManager : Singleton<UIManager>
         if(_event == null)  // add ref for events manager if not present
         {
             _event = Events.Instance;
-        }
 
-        _event.onPlayerLivesChange += ChangeLivesText;
-        _event.onSensorStateChange += ChanageSensorText;
+        }
+        if(_event == null)
+        {
+            Debug.Log("Events controller no registered");
+        }
+        _event.onPlayerHealthChange += ChangeHealthText;
+        _event.onPlayerJumpChange += ChangeJumpText;
         GameManager.Instance.OnGameStateChanged.AddListener(GameStateChanged);
        
 
@@ -165,31 +168,22 @@ public class UIManager : Singleton<UIManager>
 
     private void OnDisable()
     {
+       _event.onPlayerHealthChange -= ChangeHealthText;
+        _event.onPlayerJumpChange -= ChangeJumpText;
 
-        _event.onPlayerLivesChange -= ChangeLivesText;
     }
 
-    private void ChangeLivesText(int lives)  // changes HUD text for number of lives when playing level, may later include icons
+    private void ChangeHealthText(int health)  // changes HUD text for number of lives when playing level, may later include icons
     {
-        _livesText.text = "Lives: " + lives;
+        _healthText.text = "Health: " + health + "%";
     }
 
-    private void ChangeGoldText(int current, int target)  // changes the gold value if collected
+    private void ChangeJumpText(int jump)  // changes the gold value if collected
     {
-        _goldText.text = "Gold: " + current + " / " + target;
+        _jumpText.text = "Jump charge:  " + jump + " % ";
     }
 
-    private void ChanageSensorText(bool state) // update the hud sensor text
-    {
-        if (state)
-        {
-            _sensorText.text = "Sensor: Ready";
-        }
-        else
-        {
-            _sensorText.text = "Sensor: Charging";
-        }
-    }
+
 
 
     private void GameStateChanged(GameManager.GameState current, GameManager.GameState old) // handle game state changes

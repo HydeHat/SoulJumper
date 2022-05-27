@@ -7,7 +7,7 @@ public class EnemyAi : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
 
-
+    public bool isGuarding;
 
     public LayerMask whatIsGround, whatIsPlayer;
 
@@ -55,6 +55,7 @@ public class EnemyAi : MonoBehaviour
             //check for sight and attack range
             _playerInSightRange = Physics.CheckSphere(transform.position, _sightRange, whatIsPlayer);
             _playerInAttackingRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
+            
             if (GameResources.playerTransform != null)
             {
                 Vector3 direction = GameResources.playerTransform.position - transform.position;
@@ -69,17 +70,22 @@ public class EnemyAi : MonoBehaviour
                             if (hit.collider.GetComponent<Entity>().isPossesed == 1)
                             {
                                 _playerVisible = true;
+                                isGuarding = false;
                             }
                         }
                     }
                 }
             }
-            if (!_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
-            if (_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
-            if (_playerInSightRange && _playerInAttackingRange && !_playerVisible) Patroling();
+            if (!isGuarding)
+            {
 
-            if (_playerInSightRange && !_playerInAttackingRange && _playerVisible) ChasePlayer();
-            if (_playerInAttackingRange && _playerVisible) AttackPlayer();
+                if (!_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
+                if (_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
+                if (_playerInSightRange && _playerInAttackingRange && !_playerVisible) Patroling();
+
+                if (_playerInSightRange && !_playerInAttackingRange && _playerVisible) ChasePlayer();
+                if (_playerInAttackingRange && _playerVisible) AttackPlayer();
+            }
         }
     }
 
@@ -135,7 +141,10 @@ public class EnemyAi : MonoBehaviour
         transform.LookAt(lookDirection);
         _isPatrolling = false;
         _gun.SetFiring(true);
+      
     }
+
+
 
     //when killed
     public void OnDeath()
@@ -147,27 +156,40 @@ public class EnemyAi : MonoBehaviour
     {
         if (_controlledEntity.isPossesed == 0)
         {
-            if (!_agent.isStopped)
+            if (!isGuarding)
             {
-                if (_controlledEntity._charAnimControl != null)
+                if (!_agent.isStopped)
                 {
-                    if (_isPatrolling)
+                    if (_controlledEntity._charAnimControl != null)
                     {
-                        _controlledEntity._charAnimControl.SetBlend(1, 0);
+                        if (_isPatrolling)
+                        {
+                            _controlledEntity._charAnimControl.SetBlend(1, 0);
+                        }
+                        else
+                        {
+                            _controlledEntity._charAnimControl.SetBlend(1, 1);
+                        }
+                        Vector3 nextMovePoint = _agent.nextPosition;
+                        _controlledEntity._charAnimControl.PlayAnimation(nextMovePoint);
+                        _controlledEntity._charAnimControl.SetFiring(false);
                     }
-                    else
+                }
+                else
+                {
+                    if (_controlledEntity._charAnimControl != null)
                     {
                         _controlledEntity._charAnimControl.SetBlend(1, 1);
+                        _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
+                        _controlledEntity._charAnimControl.SetFiring(true);
                     }
-                    Vector3 nextMovePoint = _agent.nextPosition;
-                    _controlledEntity._charAnimControl.PlayAnimation(nextMovePoint);
                 }
             }
             else
             {
                 if (_controlledEntity._charAnimControl != null)
                 {
-                    _controlledEntity._charAnimControl.SetBlend(1, 1);
+                    _controlledEntity._charAnimControl.SetBlend(1, 0);
                     _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
                 }
             }

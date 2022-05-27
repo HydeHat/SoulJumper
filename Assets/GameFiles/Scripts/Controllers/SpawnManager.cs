@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    [SerializeField] private GameObject _playerPrfab;
-    [Header("Obstical Variables")]
-    
 
-    [Header("Collectable variables")]
-    [SerializeField] private GameObject _collectablePrefab;
-    [SerializeField] private int _collectablePoolSize;
-    private List<GameObject> _collectablePool;
-    [SerializeField] private Vector3 _pickupWeight;
-
+    [SerializeField] GameObject[] _entityPrefabs;
     
 
     private Events _event;
@@ -25,11 +17,7 @@ public class SpawnManager : Singleton<SpawnManager>
     
     private void Update()
     {
-        if (_gameActive)  // if game active start spawning obsticals on a given Delay
-        {
-            
 
-        }
     }
 
    
@@ -44,49 +32,15 @@ public class SpawnManager : Singleton<SpawnManager>
     private void StartGame()  // when level start is called obstacle pool is initialized
     {
 
-        Instantiate(_playerPrfab, GameResources.playerStartPos, _playerPrfab.transform.rotation);
-        _gameActive = true;
     }
 
- /*   private void InitializeObstaclePool() // initialize obstacle pool
-    {
-        for(int i = 0; i <= _obstaclePoolSize; i++)
-        {
-            AddOstacleToPool();
-        }
-    }
-
-    private GameObject AddOstacleToPool() // adds obstacle to pool
-    {
-        var d = Instantiate(_obstacle, _poolStore, transform.rotation);
-        _obstaclePool.Add(d);
-        d.GetComponent<Obstacle>().Initialize();
-        return d;
-    }
-
-    private void InitializeCollectablePool() // initialize obstacle pool
-    {
-        for (int i = 0; i <= _collectablePoolSize; i++)
-        {
-            AddCollectableToPool();
-        }
-    }
-
-    private GameObject AddCollectableToPool() // adds obstacle to pool
-    {
-        var d = Instantiate(_collectablePrefab, _poolStore, transform.rotation);
-        _collectablePool.Add(d);
-        d.GetComponent<Collectable>().Initialize();
-        return d;
-    }*/
-
-
+ 
     
 
     private void OnEnable()   // when the spawn manager is enabled it registers to recieve events
     {
-        _event = Events.Instance;
-        _event.onLevelReadyToStart += StartGame;
+   //     _event = Events.Instance;
+     //   _event.onLevelReadyToStart += StartGame;
        
         
     }
@@ -110,5 +64,29 @@ public class SpawnManager : Singleton<SpawnManager>
     private void StartNextLevel()
     {
         _gameActive = true;
+    }
+
+
+    public void SpawnEnemies(SpawnPoint[] spawnPoints)
+    {
+        foreach(SpawnPoint sp in spawnPoints)
+        {
+            GameObject character = PickRandomEntity();
+            Vector3 pos = sp.gameObject.transform.position;
+            pos = new Vector3(pos.x,pos.y + 1.0f, pos.z);
+
+
+            GameObject entity = Instantiate(character, pos, sp.gameObject.transform.rotation);
+            if(sp.GetSpawnType() == GameResources.spawnType.GUARDING)
+            {
+                entity.GetComponent<EnemyAi>().isGuarding = true;
+            }
+        }
+    }
+
+    private GameObject PickRandomEntity()
+    {
+        int randomIndex = Random.Range(0, _entityPrefabs.Length - 1);
+        return _entityPrefabs[randomIndex];
     }
 }

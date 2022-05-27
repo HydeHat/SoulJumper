@@ -35,6 +35,7 @@ public class Player : Singleton<Player>
         GameResources.playerTransform = _firstEntity.transform;
         _currentEntityTransform = _firstEntity.transform;
         _currentPossesedEntity = _firstEntity;
+        gun = _currentPossesedEntity.ReturnGun();
         GameResources._player = this;
 
     }

@@ -77,6 +77,8 @@ public class PlayerMovement : MonoBehaviour
             if (_entity._charAnimControl != null)
             {
                 _entity._charAnimControl.PlayAnimation(moveVelocity);
+                _entity._charAnimControl.SetBlend(1, 1);
+                _entity._charAnimControl.SetFiring(true);
             }
         }
 

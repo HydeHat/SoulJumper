@@ -38,9 +38,15 @@ public class Projectile : MonoBehaviour
             other.gameObject.GetComponent<Entity>().OnHit(damage);
 
         }
+        if (other.gameObject.GetComponent<Projectile>())
+        {
 
+        }
+        else
+        {
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
     
 }

@@ -8,10 +8,13 @@ public class Player : Singleton<Player>
     //public Events.EventLevelChanged levelChanged;
 
     [SerializeField] private GameObject entity;
+    [SerializeField] private GameObject _soulPrefab;
+    [SerializeField] private bool _targetReached;
     //[SerializeField] private PlayerWeapons _playWep;
     //playerStats
     [Header("Player stats")]
-    [SerializeField] private int _soulCharge;
+    [SerializeField] private float _soulJumpCharge = 100;
+    [SerializeField] private float _soulJumpChargeRate = 5.0f;
     [SerializeField] private Vector3 _startPos;
     [SerializeField] private Vector3 _playerOffset;
     [SerializeField] private int hitPointsLeft;
@@ -52,6 +55,10 @@ public class Player : Singleton<Player>
             gun.SetFiring(false);
         }
 
+        if(_soulJumpCharge < 100f)
+        {
+            _soulJumpCharge += _soulJumpChargeRate * Time.deltaTime;
+        }
     }
 
 
@@ -79,24 +86,36 @@ public class Player : Singleton<Player>
             }
         }
 
-        PossessEntity();
+        StartCoroutine( PossessEntity());
 
     }
 
-    private void PossessEntity()
+    IEnumerator  PossessEntity()
     {
+        _targetReached = false;
         Entity oldEntity = _currentPossesedEntity;
+        Transform oldETans = _currentEntityTransform;
         _currentPossesedEntity = _closestEntity.GetComponent<Entity>();
-         _currentPossesedEntity.SetPossesed(1);
         _currentEntityTransform = _closestEntity.transform;
+        oldEntity.NowDead();
+        GameObject soul = Instantiate(_soulPrefab, oldETans.position , oldETans.rotation);
+        soul.GetComponent<SoulMovement>().SetToPossesedTransform(_currentEntityTransform);
+        yield return new WaitUntil(() => _targetReached == true);
+        _currentPossesedEntity.SetPossesed(1);
         GameResources.playerTransform = _currentEntityTransform;
-        oldEntity.DestroyMe();
+        oldEntity.NowDead();
         gun = _currentPossesedEntity.ReturnGun();
+        _soulJumpCharge = 0f;
+    }
+
+    public void SetTargetReached(bool targ)
+    {
+        _targetReached = targ;
     }
 
     public void OnDeath()
     {
-        if(_soulCharge >= 100)
+        if(_soulJumpCharge >= 100)
         {
             JumpToNewBody();
         }

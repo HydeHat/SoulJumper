@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour
     private Rigidbody _rb;
     private int _entityIndex;
     public CharAnimControl _charAnimControl;
-    
+    public bool isAlive = true;
     //Pulic Variables
     public int isPossesed = 0 ;
 
@@ -91,8 +91,11 @@ public class Entity : MonoBehaviour
         gameObject.layer = mask;
     }
 
-    public void DestroyMe()
+    public void NowDead()
     {
-        Destroy(gameObject);
+        isAlive = false;
+        gameObject.GetComponent<Collider>().enabled = false;
+        _rb.isKinematic = true;
+        isPossesed = 0;
     }
 }

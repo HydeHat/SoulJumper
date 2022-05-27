@@ -48,43 +48,46 @@ public class EnemyAi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_controlledEntity.isPossesed == 0)
+        if (_controlledEntity.isAlive)
         {
-            gameObject.GetComponent<NavMeshAgent>().enabled = true;
-            _playerVisible = false;
-            //check for sight and attack range
-            _playerInSightRange = Physics.CheckSphere(transform.position, _sightRange, whatIsPlayer);
-            _playerInAttackingRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
-            
-            if (GameResources.playerTransform != null)
+            if (_controlledEntity.isPossesed == 0)
             {
-                Vector3 direction = GameResources.playerTransform.position - transform.position;
+                gameObject.GetComponent<NavMeshAgent>().enabled = true;
+                _playerVisible = false;
+                //check for sight and attack range
+                _playerInSightRange = Physics.CheckSphere(transform.position, _sightRange, whatIsPlayer);
+                _playerInAttackingRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
 
-                if (_playerInSightRange)
+                if (GameResources.playerTransform != null)
                 {
-                    RaycastHit hit;
-                    if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, 30f))
+                    Vector3 direction = GameResources.playerTransform.position - transform.position;
+
+                    if (_playerInSightRange)
                     {
-                        if (hit.collider.GetComponent<Entity>())
+                        RaycastHit hit;
+                        if (Physics.Raycast(transform.position + Vector3.up, direction, out hit, 30f))
                         {
-                            if (hit.collider.GetComponent<Entity>().isPossesed == 1)
+                            if (hit.collider.GetComponent<Entity>())
                             {
-                                _playerVisible = true;
-                                isGuarding = false;
+                                if (hit.collider.GetComponent<Entity>().isPossesed == 1)
+                                {
+                                    _playerVisible = true;
+                                    isGuarding = false;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (!isGuarding)
-            {
+                if (!isGuarding)
+                {
 
-                if (!_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
-                if (_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
-                if (_playerInSightRange && _playerInAttackingRange && !_playerVisible) Patroling();
+                    if (!_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
+                    if (_playerInSightRange && !_playerInAttackingRange && !_playerVisible) Patroling();
+                    if (_playerInSightRange && _playerInAttackingRange && !_playerVisible) Patroling();
 
-                if (_playerInSightRange && !_playerInAttackingRange && _playerVisible) ChasePlayer();
-                if (_playerInAttackingRange && _playerVisible) AttackPlayer();
+                    if (_playerInSightRange && !_playerInAttackingRange && _playerVisible) ChasePlayer();
+                    if (_playerInAttackingRange && _playerVisible) AttackPlayer();
+                }
             }
         }
     }
@@ -149,51 +152,62 @@ public class EnemyAi : MonoBehaviour
     //when killed
     public void OnDeath()
     {
-        Destroy(gameObject);
+        _agent.isStopped = true;
+        if (_controlledEntity._charAnimControl != null)
+        {
+            _controlledEntity._charAnimControl.SetBlend(1, 0);
+            _controlledEntity._charAnimControl.SetDeath(true);
+
+        }
+        GameResources.entities.Remove(gameObject);
+        GameResources.nunberOfEntities--;
+        _controlledEntity.NowDead();
     }
 
     private void FixedUpdate()
     {
-        if (_controlledEntity.isPossesed == 0)
+        if (_controlledEntity.isAlive)
         {
-            if (!isGuarding)
+            if (_controlledEntity.isPossesed == 0)
             {
-                if (!_agent.isStopped)
+                if (!isGuarding)
                 {
-                    if (_controlledEntity._charAnimControl != null)
+                    if (!_agent.isStopped)
                     {
-                        if (_isPatrolling)
+                        if (_controlledEntity._charAnimControl != null)
                         {
-                            _controlledEntity._charAnimControl.SetBlend(1, 0);
+                            if (_isPatrolling)
+                            {
+                                _controlledEntity._charAnimControl.SetBlend(1, 0);
+                            }
+                            else
+                            {
+                                _controlledEntity._charAnimControl.SetBlend(1, 1);
+                            }
+                            Vector3 nextMovePoint = _agent.nextPosition;
+                            _controlledEntity._charAnimControl.PlayAnimation(nextMovePoint);
+                            _controlledEntity._charAnimControl.SetFiring(false);
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (_controlledEntity._charAnimControl != null)
                         {
                             _controlledEntity._charAnimControl.SetBlend(1, 1);
+                            _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
+                            _controlledEntity._charAnimControl.SetFiring(true);
                         }
-                        Vector3 nextMovePoint = _agent.nextPosition;
-                        _controlledEntity._charAnimControl.PlayAnimation(nextMovePoint);
-                        _controlledEntity._charAnimControl.SetFiring(false);
                     }
                 }
                 else
                 {
                     if (_controlledEntity._charAnimControl != null)
                     {
-                        _controlledEntity._charAnimControl.SetBlend(1, 1);
+                        _controlledEntity._charAnimControl.SetBlend(1, 0);
                         _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
-                        _controlledEntity._charAnimControl.SetFiring(true);
                     }
-                }
-            }
-            else
-            {
-                if (_controlledEntity._charAnimControl != null)
-                {
-                    _controlledEntity._charAnimControl.SetBlend(1, 0);
-                    _controlledEntity._charAnimControl.PlayAnimation(Vector3.zero);
                 }
             }
         }
     }
-
 }

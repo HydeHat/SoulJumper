@@ -645,7 +645,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _event: {fileID: 0}
   entity: {fileID: 0}
-  _soulCharge: 100
+  _soulPrefab: {fileID: 5828791669386581961, guid: 130da10e53158c7448d45ac17d28da99,
+    type: 3}
+  _targetReached: 0
+  _soulJumpCharge: 100
+  _soulJumpChargeRate: 5
   _startPos: {x: 0, y: 1, z: 0}
   _playerOffset: {x: 0, y: 0, z: 0}
   hitPointsLeft: 210
@@ -917,6 +921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CharacterHolder
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508898101612612405, guid: 3f55fdef7c9155b4fa8b87fb5162b431,
+        type: 3}
+      propertyPath: fireRate
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f55fdef7c9155b4fa8b87fb5162b431, type: 3}

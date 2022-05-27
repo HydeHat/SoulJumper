@@ -21,6 +21,11 @@ public class CharAnimControl : MonoBehaviour
          _anim.SetBool("Firing", shoot);
     }
 
+    public void SetDeath(bool isDead)
+    {
+        _anim.SetBool("isDead", true);
+    }
+
     public void SetBlend(int blendLayer, float blendAmount)
     {
         _anim.SetLayerWeight(blendLayer, blendAmount);

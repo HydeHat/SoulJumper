@@ -155,7 +155,7 @@ public class UIManager : Singleton<UIManager>
         {
             _event = Events.Instance;
         }
-        _event.onPlayerGoldChange += ChangeGoldText;
+
         _event.onPlayerLivesChange += ChangeLivesText;
         _event.onSensorStateChange += ChanageSensorText;
         GameManager.Instance.OnGameStateChanged.AddListener(GameStateChanged);
@@ -165,7 +165,7 @@ public class UIManager : Singleton<UIManager>
 
     private void OnDisable()
     {
-        _event.onPlayerGoldChange -= ChangeGoldText;
+
         _event.onPlayerLivesChange -= ChangeLivesText;
     }
 

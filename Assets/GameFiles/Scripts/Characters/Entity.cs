@@ -6,6 +6,7 @@ public class Entity : MonoBehaviour
 {
 
     [Header("Character stats")]
+    private int _totalHitpoints;
     [SerializeField] private int _hitPointsRemaing;
     [SerializeField] public int _speed;
     
@@ -17,6 +18,7 @@ public class Entity : MonoBehaviour
     private int _entityIndex;
     public CharAnimControl _charAnimControl;
     public bool isAlive = true;
+    public bool isAlien = false;
     //Pulic Variables
     public int isPossesed = 0 ;
 
@@ -39,9 +41,17 @@ public class Entity : MonoBehaviour
         {
             Debug.Log("Character does not have a _charAnimContoller.");
         }
+        _totalHitpoints = _hitPointsRemaing;
     }
 
-
+    public int GetHitPointsRemaing()
+    {
+        return _hitPointsRemaing;
+    }
+    public int GetHitPointsTotal()
+    {
+        return _totalHitpoints;
+    }
     public void OnHit(int damage)
     {
         if (_hitPointsRemaing > 0)
@@ -73,10 +83,10 @@ public class Entity : MonoBehaviour
         return _gun;
     }
 
-    public void SetPossesed(int isPos)
+    public void SetPossesed(int isPos, bool alien)
     {
         isPossesed = isPos;
-
+        isAlien = alien;
         SetGameobjectLayer();
         if (GameResources.nunberOfEntities > 0)
         {

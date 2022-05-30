@@ -9,13 +9,15 @@ public class Projectile : MonoBehaviour
     [SerializeField] float lifetime;
 
     private Transform pTransfrom;
+
     private float timer = 0.0f; 
  
     // Start is called before the first frame update
     void Start()
     {
         pTransfrom = transform;
-        
+
+        pTransfrom.LookAt(GameResources.playerTransform, Vector3.up);
     }
 
     // Update is called once per frame

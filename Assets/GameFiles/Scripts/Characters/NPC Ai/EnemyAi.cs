@@ -21,7 +21,7 @@ public class EnemyAi : MonoBehaviour
     [Header("Patrol settigs")]
     //Patroling variables
     private Vector3 _walkPoint;
-    private bool walkPointSet;
+    [SerializeField] private bool walkPointSet;
     [SerializeField] private float _walkPointRange;
 
     //states
@@ -120,7 +120,7 @@ public class EnemyAi : MonoBehaviour
         float randomX = Random.Range(-_walkPointRange, _walkPointRange);
 
         _walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
+        Debug.DrawLine(transform.position, _walkPoint);
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
             walkPointSet = true;
     }

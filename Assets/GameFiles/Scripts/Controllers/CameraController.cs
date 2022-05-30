@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         if (GameResources.playerTransform != null)
         {
             transform.position = GameResources.playerTransform.position + cameraOffset;

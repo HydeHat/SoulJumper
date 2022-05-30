@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public  class RestartManger : MonoBehaviour
 {
-    public  void Restart(GameObject[] managers)
+    public void Restart(GameObject[] managers)
     {
 
         foreach(GameObject o in managers)
@@ -14,7 +14,7 @@ public  class RestartManger : MonoBehaviour
         }
         Destroy(GameManager.Instance.gameObject);
         Destroy(Camera.main.gameObject);
-        SceneManager.LoadSceneAsync("LoadScene");
+        SceneManager.LoadSceneAsync("Title");
 
 
     }

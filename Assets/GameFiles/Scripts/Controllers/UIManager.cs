@@ -98,6 +98,7 @@ public class UIManager : Singleton<UIManager>
         _infoBackButton.onClick.AddListener(InfoBackButtonPressed);
         _event.onPlayerActive += PlayerActive;
         _event.PlayBGMSoundClip(0);
+
     }
 
     private void InfoBackButtonPressed()
@@ -117,12 +118,12 @@ public class UIManager : Singleton<UIManager>
     {
         // needs action for showing settings menu on title screen
         _settingsObject.SetActive(true);
-        _settingsAnimator.SetTrigger("FadeIn");
+
     }
 
     private void BackButtonPressed()
     {
-        _settingsAnimator.SetTrigger("FadeOut");
+        _settingsObject.SetActive(false);
     }
 
 
@@ -155,10 +156,7 @@ public class UIManager : Singleton<UIManager>
             _event = Events.Instance;
 
         }
-        if(_event == null)
-        {
-            Debug.Log("Events controller no registered");
-        }
+
         _event.onPlayerHealthChange += ChangeHealthText;
         _event.onPlayerJumpChange += ChangeJumpText;
         GameManager.Instance.OnGameStateChanged.AddListener(GameStateChanged);
@@ -175,6 +173,7 @@ public class UIManager : Singleton<UIManager>
 
     private void ChangeHealthText(int health)  // changes HUD text for number of lives when playing level, may later include icons
     {
+        Debug.Log("Health Called");
         _healthText.text = "Health: " + health + "%";
     }
 
@@ -208,6 +207,7 @@ public class UIManager : Singleton<UIManager>
             case GameManager.GameState.MAINMENU:
                 if(old == GameManager.GameState.PREGAME)
                 {
+
                     ShowTitleUI();
                 }
                 break;
@@ -341,7 +341,7 @@ public class UIManager : Singleton<UIManager>
 
     IEnumerator ShowLevelText(bool firstLevel)
     {
-
+        
         _levelText.text = "LEVEL" + (_currentLevel + 1);
         _levelTextObject.SetActive(true);
         yield return new WaitForSeconds(3);

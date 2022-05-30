@@ -118,4 +118,12 @@ public class Events : Singleton<Events>
     {
         onPlayerActive();
     }
+
+    public delegate void ChangeLevel();
+    public event ChangeLevel onChangeLevel;
+
+    public void SetChangeLevel(int level)
+    {
+        GameManager.Instance.LoadLevel("Level " + level);
+    }
 }

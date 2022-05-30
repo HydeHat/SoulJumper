@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_entity.isPossesed == 1)
+        if (_entity.isPossesed == 1 )
         {
            
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
@@ -70,17 +70,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_entity.isAlive)
+        if (!_entity.isAlien)
         {
-            IsOnGround();
-            playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
-            if (_entity.isPossesed == 1)
+            if (_entity.isAlive)
+            {
+                IsOnGround();
+                playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
+                if (_entity.isPossesed == 1)
+                {
+                    if (_entity._charAnimControl != null)
+                    {
+                        _entity._charAnimControl.PlayAnimation(moveVelocity);
+                        _entity._charAnimControl.SetBlend(1, 1);
+                        _entity._charAnimControl.SetFiring(true);
+                    }
+                }
+            }
+            else
             {
                 if (_entity._charAnimControl != null)
                 {
-                    _entity._charAnimControl.PlayAnimation(moveVelocity);
-                    _entity._charAnimControl.SetBlend(1, 1);
-                    _entity._charAnimControl.SetFiring(true);
+                    _entity._charAnimControl.SetBlend(1, 0);
+                    _entity._charAnimControl.SetDeath(true);
                 }
             }
         }
@@ -88,8 +99,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (_entity._charAnimControl != null)
             {
-                _entity._charAnimControl.SetBlend(1, 0);
+                if(!_entity.isAlive)
                 _entity._charAnimControl.SetDeath(true);
+                
             }
         }
 

@@ -31,6 +31,8 @@ public class GameManager : Singleton<GameManager>
     private string _currentLevelName = string.Empty;
     private string _prevLevelName = string.Empty;
 
+    private Player _player;
+
     List<AsyncOperation> _loadOperations;
 
     GameState _currentGameState = GameState.PREGAME;
@@ -46,6 +48,7 @@ public class GameManager : Singleton<GameManager>
 
         Events.Instance.onUIStartButtonPressed += StartGame;
         UIManager.Instance.onFadecomplete.AddListener(HandleFadeMenuComplete);
+        _player = GameResources._player;
 
 
         
@@ -76,9 +79,10 @@ public class GameManager : Singleton<GameManager>
             if (_loadOperations.Count == 0)
             {
                 
-                if(_currentLevelName == "Main")
+                if(_currentLevelName == "Level 1")
                 {
                     UpdateState(GameState.RUNNING);
+
                 }
                 if(_currentLevelName == "GameOver")
                 {
@@ -88,7 +92,7 @@ public class GameManager : Singleton<GameManager>
                 {
                     if (_previousGameState == GameState.PAUSED)
                     {
-                        UnloadLevel("Main");
+                        UnloadLevel(_currentLevelName);
                         GameObject.Find("RestartManager").GetComponent<RestartManger>().Restart(_instanceSystemPrefabs.ToArray());
                     }
                     else if (_previousGameState == GameState.GAMEOVER)
@@ -96,6 +100,10 @@ public class GameManager : Singleton<GameManager>
                         UnloadLevel("GameOver");
                         GameObject.Find("RestartManager").GetComponent<RestartManger>().Restart(_instanceSystemPrefabs.ToArray());
                     }
+                }
+                if(_currentGameState == GameState.RUNNING)
+                {
+
                 }
 
             }
@@ -155,7 +163,8 @@ public class GameManager : Singleton<GameManager>
             prefabInstance = Instantiate(SystemPrefabs[i]);
             _instanceSystemPrefabs.Add(prefabInstance);
         }
-        _currentLevelName = "LoadScene";
+        _currentLevelName = "Title";
+        
         UpdateState(GameState.MAINMENU);
     }
 
@@ -181,6 +190,7 @@ public class GameManager : Singleton<GameManager>
 
     public void UnloadLevel(string levelName)
     {
+        Debug.Log("Unload level name: " + levelName);
         AsyncOperation ao = SceneManager.UnloadSceneAsync(levelName);
         if (ao == null)
         {
@@ -206,7 +216,8 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
 
-        LoadLevel("Main");
+        LoadLevel("Level 1");
+        GameResources.currentLevel = 1;
     }
 
     public void TogglePause()
@@ -216,8 +227,9 @@ public class GameManager : Singleton<GameManager>
 
     public void RestartGame()
     {
-        UpdateState(GameState.RESTART);
+
         LoadLevel("Restart");
+        UpdateState(GameState.RESTART);
     }
 
     public void QuitGame()

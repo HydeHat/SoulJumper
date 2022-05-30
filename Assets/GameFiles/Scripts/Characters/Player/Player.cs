@@ -29,42 +29,77 @@ public class Player : Singleton<Player>
     private Entity _currentPossesedEntity;
 
     [SerializeField] private Entity _firstEntity;
+    private bool _isAlien = false;
 
-
+    public bool IsAlien()
+    {
+        return _isAlien;
+    }
     private void Start()
     {
         _event = Events.Instance;
-        _firstEntity.SetPossesed(1);
+        GameResources._player = this;
+        LevelStartSetup();
+    }
+
+    public void LevelStartSetup()
+    {
+        Debug.Log("Player start level called");
+        _firstEntity = GameResources.currentLevelStartSettings.firstEntity;
+        _isAlien = GameResources.currentLevelStartSettings.isAlien;
+        _firstEntity.SetPossesed(1, _isAlien);
         GameResources.playerTransform = _firstEntity.transform;
         _currentEntityTransform = _firstEntity.transform;
         _currentPossesedEntity = _firstEntity;
         gun = _currentPossesedEntity.ReturnGun();
-        GameResources._player = this;
-
     }
+
+
 
     private void Update()
     {
-        
-        if (Input.GetMouseButton(0))
+        if (!_isAlien)
         {
-            gun.SetFiring(true);
-        }
-        else
-        {
-            gun.SetFiring(false);
+            if (Input.GetMouseButton(0))
+            {
+                if (gun != null)
+                    gun.SetFiring(true);
+            }
+            else
+            {
+                if (gun != null)
+                    gun.SetFiring(false);
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                if (_soulJumpCharge >= 100)
+                {
+                    _currentPossesedEntity.NowDead();
+                    JumpToNewBody();
+                    
+                }
+            }
+            if (_soulJumpCharge < 100f)
+            {
+                _soulJumpCharge += _soulJumpChargeRate * Time.deltaTime;
+            }
+            if(_soulJumpCharge > 100f)
+            {
+                _soulJumpCharge = 100f;
+            }
+            int percenthitpointsRemaining = _currentPossesedEntity.GetHitPointsRemaing() / _currentPossesedEntity.GetHitPointsTotal() * 100;
+            _event.HealthChanged(percenthitpointsRemaining);
+            _event.PlayerJumpChanged(Mathf.FloatToHalf(_soulJumpCharge));
         }
 
-        if(_soulJumpCharge < 100f)
-        {
-            _soulJumpCharge += _soulJumpChargeRate * Time.deltaTime;
-        }
     }
 
 
 
     private void JumpToNewBody()
     {
+        if (_isAlien) _isAlien = false; 
         float closestDistance = 10000000000000000f;
         foreach (GameObject obj in GameResources.entities)
         {
@@ -101,7 +136,7 @@ public class Player : Singleton<Player>
         GameObject soul = Instantiate(_soulPrefab, oldETans.position , oldETans.rotation);
         soul.GetComponent<SoulMovement>().SetToPossesedTransform(_currentEntityTransform);
         yield return new WaitUntil(() => _targetReached == true);
-        _currentPossesedEntity.SetPossesed(1);
+        _currentPossesedEntity.SetPossesed(1, _isAlien);
         GameResources.playerTransform = _currentEntityTransform;
         oldEntity.NowDead();
         gun = _currentPossesedEntity.ReturnGun();
@@ -133,11 +168,11 @@ public class Player : Singleton<Player>
 
     private void OnEnable() // trigger update of gold and lives UI
     {
-       /* if(_event == null)
+        if(_event == null)
         {
             _event = Events.Instance;
         }
-        */
+       
     }
 
 
@@ -151,10 +186,9 @@ public class Player : Singleton<Player>
 
     
 
-  /*  private void GameOver()
+    private void GameOver()
     {
         GameManager.Instance.LoadLevel("GameOver");
-        SpawnManager.Instance.OnGameOver();
         gameObject.SetActive(false);
     }
 
@@ -164,5 +198,5 @@ public class Player : Singleton<Player>
     {
             
     }
-    */
+
 }

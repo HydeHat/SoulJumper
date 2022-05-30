@@ -101,6 +101,7 @@ MonoBehaviour:
   _hitPointsRemaing: 30
   _speed: 0
   _charAnimControl: {fileID: 0}
+  isAlive: 1
   isPossesed: 0
 --- !u!114 &4508898101495235238
 MonoBehaviour:
@@ -124,6 +125,7 @@ MonoBehaviour:
     m_Bits: 128
   hitPointsRemaining: 0
   _gun: {fileID: 0}
+  walkPointSet: 0
   _walkPointRange: 5
   _sightRange: 30
   _attackRange: 10
@@ -330,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ac087d9dcf1e34b934325cd889f6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 9221145045193752951, guid: fa551bd9b973d854cabf6316f22f3c9f,
+  projectile: {fileID: 7634052239124749191, guid: c9566e96fab9fa64cb24b11075104b95,
     type: 3}
   muzzelTransform: {fileID: 4508898100937467872}
   fireRate: 30

@@ -11,15 +11,18 @@ public class SpawnTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-
         if (other.gameObject.GetComponentInParent<Entity>())
         {
-
-            if (!_hasTriggered)
+            if (other.gameObject.GetComponentInParent<Entity>().isPossesed == 1)
             {
-                if(_spawnPoints.Length > 0)
+
+                if (!_hasTriggered)
                 {
-                    SpawnManager.Instance.SpawnEnemies(_spawnPoints);
+                    if (_spawnPoints.Length > 0)
+                    {
+                        SpawnManager.Instance.SpawnEnemies(_spawnPoints);
+                    }
+                    _hasTriggered = true;
                 }
             }
         }

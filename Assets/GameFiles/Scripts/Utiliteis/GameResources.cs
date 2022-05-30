@@ -39,10 +39,13 @@ public static class GameResources
 
     public static Vector3 playerStartPos = new Vector3(100, 20, 30);
 
+    
+
     public static int currentLevel { get; set; }
 
     public static LevelStartSettings currentLevelStartSettings { get; set; }
     
+    public static bool gameIsRunning { get; set; }
 
 
 }

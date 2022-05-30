@@ -98,10 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06280a24a18b6942b400b49c1420c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPointsRemaing: 30
+  _hitPointsRemaing: 60
   _speed: 0
   _charAnimControl: {fileID: 0}
   isAlive: 1
+  isAlien: 0
   isPossesed: 0
 --- !u!114 &4508898101495235238
 MonoBehaviour:
@@ -338,6 +339,7 @@ MonoBehaviour:
   fireRate: 30
   isFiring: 0
   timer: 100
+  _shotSound: 0
 --- !u!4 &4114156536144931533 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6122f2a0a21d5e249aa8b0069902cba4,

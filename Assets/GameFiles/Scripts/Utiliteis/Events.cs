@@ -64,17 +64,7 @@ public class Events : Singleton<Events>
 
 
 
-    
-    public delegate void SensorStateChange(bool state);
-    public event SensorStateChange onSensorStateChange;
 
-    public void DoSensorStateChange(bool state)
-    {
-        if (onSensorStateChange != null)
-        {
-            onSensorStateChange(state);
-        }
-    }
 
     // play UI Sounds 
 

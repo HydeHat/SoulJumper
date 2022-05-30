@@ -22,6 +22,8 @@ public class Entity : MonoBehaviour
     //Pulic Variables
     public int isPossesed = 0 ;
 
+    private Events _event;
+
     
     // Start is called before the first frame update
     void Awake()
@@ -42,6 +44,12 @@ public class Entity : MonoBehaviour
             Debug.Log("Character does not have a _charAnimContoller.");
         }
         _totalHitpoints = _hitPointsRemaing;
+    }
+
+    private void OnEnable()
+    {
+        if (_event == null)
+            _event = Events.Instance;
     }
 
     public int GetHitPointsRemaing()
@@ -68,6 +76,10 @@ public class Entity : MonoBehaviour
                     GameResources._player.OnDeath();
                 }
             }
+            if (isPossesed == 1)
+            {
+                UpdateHealth();
+            }
         }
     }
 
@@ -88,11 +100,11 @@ public class Entity : MonoBehaviour
         isPossesed = isPos;
         isAlien = alien;
         SetGameobjectLayer();
-        if (GameResources.nunberOfEntities > 0)
-        {
+
             GameResources.entities.Remove(gameObject);
             GameResources.nunberOfEntities--;
-        }
+        UpdateHealth();
+
     }
 
     private void SetGameobjectLayer()
@@ -107,5 +119,11 @@ public class Entity : MonoBehaviour
         gameObject.GetComponent<Collider>().enabled = false;
         _rb.isKinematic = true;
         isPossesed = 0;
+    }
+
+    public void UpdateHealth()
+    {
+        int percenthitpointsRemaining =Mathf.RoundToInt( _hitPointsRemaing / _totalHitpoints * 100);
+        _event.HealthChanged(percenthitpointsRemaining);
     }
 }

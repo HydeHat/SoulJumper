@@ -173,7 +173,6 @@ public class UIManager : Singleton<UIManager>
 
     private void ChangeHealthText(int health)  // changes HUD text for number of lives when playing level, may later include icons
     {
-        Debug.Log("Health Called");
         _healthText.text = "Health: " + health + "%";
     }
 
@@ -301,7 +300,7 @@ public class UIManager : Singleton<UIManager>
         _settingsObject.SetActive(false);
         _instrutionsObject.SetActive(false);
         _inGameMenuObject.SetActive(false);
-        GameManager.Instance.UnloadLevel("Main");
+        GameManager.Instance.UnloadLevel("Level " + GameResources.currentLevel);
 
 
         
@@ -348,6 +347,7 @@ public class UIManager : Singleton<UIManager>
         _levelText.text = "START";
         yield return new WaitForSeconds(2);
         _levelTextObject.SetActive(false);
+        GameResources.gameIsRunning = true;
         if (firstLevel)
         {
             _event.StartTheLevel();

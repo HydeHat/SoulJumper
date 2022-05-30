@@ -58,41 +58,42 @@ public class Player : Singleton<Player>
 
     private void Update()
     {
-        if (!_isAlien)
+        if (GameResources.gameIsRunning)
         {
-            if (Input.GetMouseButton(0))
+            if (!_isAlien)
             {
-                if (gun != null)
-                    gun.SetFiring(true);
-            }
-            else
-            {
-                if (gun != null)
-                    gun.SetFiring(false);
-            }
-
-            if (Input.GetMouseButton(0))
-            {
-                if (_soulJumpCharge >= 100)
+                if (Input.GetMouseButton(0))
                 {
-                    _currentPossesedEntity.NowDead();
-                    JumpToNewBody();
-                    
+                    if (gun != null)
+                        gun.SetFiring(true);
                 }
-            }
-            if (_soulJumpCharge < 100f)
-            {
-                _soulJumpCharge += _soulJumpChargeRate * Time.deltaTime;
-            }
-            if(_soulJumpCharge > 100f)
-            {
-                _soulJumpCharge = 100f;
-            }
-            int percenthitpointsRemaining = _currentPossesedEntity.GetHitPointsRemaing() / _currentPossesedEntity.GetHitPointsTotal() * 100;
-            _event.HealthChanged(percenthitpointsRemaining);
-            _event.PlayerJumpChanged(Mathf.FloatToHalf(_soulJumpCharge));
-        }
+                else
+                {
+                    if (gun != null)
+                        gun.SetFiring(false);
+                }
 
+                if (Input.GetMouseButton(0))
+                {
+                    if (_soulJumpCharge >= 100)
+                    {
+                        _currentPossesedEntity.NowDead();
+                        JumpToNewBody();
+
+                    }
+                }
+                if (_soulJumpCharge < 100f)
+                {
+                    _soulJumpCharge += _soulJumpChargeRate * Time.deltaTime;
+                }
+                if (_soulJumpCharge > 100f)
+                {
+                    _soulJumpCharge = 100f;
+                }
+
+                _event.PlayerJumpChanged(Mathf.RoundToInt(_soulJumpCharge));
+            }
+        }
     }
 
 
@@ -103,21 +104,24 @@ public class Player : Singleton<Player>
         float closestDistance = 10000000000000000f;
         foreach (GameObject obj in GameResources.entities)
         {
-            if (GameResources.entities.Count > 1)
+            if (obj)
             {
-
-                float distance = Vector3.Distance(_currentEntityTransform.position, obj.transform.position);
-                if (distance <= closestDistance)
+                if (GameResources.entities.Count > 1)
                 {
-                    closestDistance = distance;
-                    _closestEntity = obj;
+
+                    float distance = Vector3.Distance(_currentEntityTransform.position, obj.transform.position);
+                    if (distance <= closestDistance)
+                    {
+                        closestDistance = distance;
+                        _closestEntity = obj;
+
+                    }
 
                 }
-
-            }
-            else
-            {
-                _closestEntity = obj;
+                else
+                {
+                    _closestEntity = obj;
+                }
             }
         }
 
@@ -163,6 +167,7 @@ public class Player : Singleton<Player>
     private void OnFullDeath()
     {
         // add stuff
+        GameManager.Instance.LoadLevel("GameOver");
     
     }
 

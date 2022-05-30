@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c917d7db314cc4786d1f814547f0b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bmgVolume: 0
-  _mainVolume: 0
-  _sfxVolume: 0
-  _uiVolume: 0
+  _bmgVolume: 100
+  _mainVolume: 100
+  _sfxVolume: 100
+  _uiVolume: 100
   _bgmSource: {fileID: 4839201914386827374}
   _uiSource: {fileID: 4839201914386827369}
   sources: {fileID: 4839201914386827368}
@@ -280,5 +280,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ef731c8305f60cc47b1f62984cb45a30, type: 3}
   - {fileID: 8300000, guid: 2977bab978b6f6349a32030b8edc73ee, type: 3}
   soundFX:
-  - {fileID: 8300000, guid: 732807d3315b27944b5909a66adbdfef, type: 3}
+  - {fileID: 8300000, guid: e1de5f0ead07a7640bd63790fb6c8045, type: 3}
   - {fileID: 8300000, guid: 4a65572387b84cc4ba0994a8342ebdae, type: 3}

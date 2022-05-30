@@ -81,6 +81,7 @@ public class GameManager : Singleton<GameManager>
                 
                 if(_currentLevelName == "Level 1")
                 {
+                    GameResources.gameIsRunning = false;
                     UpdateState(GameState.RUNNING);
 
                 }

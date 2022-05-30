@@ -172,6 +172,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOnceSFX(int clipNo)
     {
+
         if (clipNo >= sources.soundFX.Length)
         {
             Debug.LogError("Clip not in array cannot play sound");

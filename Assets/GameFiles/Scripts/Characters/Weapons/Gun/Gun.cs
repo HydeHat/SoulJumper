@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
 
     [SerializeField] bool isFiring = false;
     [SerializeField] float timer = 100;
+    [SerializeField] int _shotSound;
     
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class Gun : MonoBehaviour
         {
             if (Instantiate(projectile, muzzelTransform.position, muzzelTransform.rotation)) 
             {
+                Events.Instance.PlayFXSoundClip(_shotSound);
             }
             timer = 0f;
         }

@@ -5,24 +5,48 @@ using UnityEngine;
 public class SpawnTrigger : MonoBehaviour
 {
     [SerializeField] SpawnPoint[] _spawnPoints;
-    
-    private bool _hasTriggered = false;
+
+    [SerializeField] private bool _hasTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if (other.gameObject.GetComponentInParent<Entity>())
+        if (GameResources.gameIsRunning)
         {
-            if (other.gameObject.GetComponentInParent<Entity>().isPossesed == 1)
+            if (other.gameObject.GetComponentInParent<Entity>())
             {
-
-                if (!_hasTriggered)
+                if (other.gameObject.GetComponentInParent<Entity>().isPossesed == 1)
                 {
-                    if (_spawnPoints.Length > 0)
+
+                    if (!_hasTriggered)
                     {
-                        SpawnManager.Instance.SpawnEnemies(_spawnPoints);
+                        if (_spawnPoints.Length > 0)
+                        {
+                            SpawnManager.Instance.SpawnEnemies(_spawnPoints);
+                        }
+                        _hasTriggered = true;
                     }
-                    _hasTriggered = true;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (GameResources.gameIsRunning)
+        {
+            if (other.gameObject.GetComponentInParent<Entity>())
+            {
+                if (other.gameObject.GetComponentInParent<Entity>().isPossesed == 1)
+                {
+
+                    if (!_hasTriggered)
+                    {
+                        if (_spawnPoints.Length > 0)
+                        {
+                            SpawnManager.Instance.SpawnEnemies(_spawnPoints);
+                        }
+                        _hasTriggered = true;
+                    }
                 }
             }
         }

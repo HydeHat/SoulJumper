@@ -30,59 +30,72 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_entity.isPossesed == 1 )
+        if (GameResources.gameIsRunning)
         {
-           
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
-            //basic Movement
-            moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-            moveVelocity = moveInput * moveSpeed;
-            Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-
-            float rayLength;
-            if (groundPlane.Raycast(cameraRay, out rayLength))
-            {
-                Vector3 pointToLookAt = cameraRay.GetPoint(rayLength);
-                // Debug.DrawLine(mainCamera.transform.position, pointToLookAt);
-                transform.LookAt(new Vector3(pointToLookAt.x, transform.position.y, pointToLookAt.z));
-            }
-
-            Ray floorColllisionCheck = new Ray(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down);
-            RaycastHit floorHit;
-            if (Physics.Raycast(floorColllisionCheck, out floorHit, 1.2f))
+            if (_entity.isPossesed == 1)
             {
 
-                if (floorHit.collider.CompareTag("Ground"))
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                //basic Movement
+                moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+                moveVelocity = moveInput * moveSpeed;
+                Ray cameraRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+                Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+                float rayLength;
+                if (groundPlane.Raycast(cameraRay, out rayLength))
                 {
-                    onGround = true;
-
+                    Vector3 pointToLookAt = cameraRay.GetPoint(rayLength);
+                    // Debug.DrawLine(mainCamera.transform.position, pointToLookAt);
+                    transform.LookAt(new Vector3(pointToLookAt.x, transform.position.y, pointToLookAt.z));
                 }
-            }
-            else
-            {
-                onGround = false;
-            }
 
+                Ray floorColllisionCheck = new Ray(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down);
+                RaycastHit floorHit;
+                if (Physics.Raycast(floorColllisionCheck, out floorHit, 1.2f))
+                {
+
+                    if (floorHit.collider.CompareTag("Ground"))
+                    {
+                        onGround = true;
+
+                    }
+                }
+                else
+                {
+                    onGround = false;
+                }
+
+            }
         }
- 
     }
 
     private void FixedUpdate()
     {
-        if (!_entity.isAlien)
+        if (GameResources.gameIsRunning)
         {
-            if (_entity.isAlive)
+            if (!_entity.isAlien)
             {
-                IsOnGround();
-                playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
-                if (_entity.isPossesed == 1)
+                if (_entity.isAlive)
+                {
+                    IsOnGround();
+                    playerRigidBody.velocity = (moveVelocity * Time.deltaTime);
+                    if (_entity.isPossesed == 1)
+                    {
+                        if (_entity._charAnimControl != null)
+                        {
+                            _entity._charAnimControl.PlayAnimation(moveVelocity);
+                            _entity._charAnimControl.SetBlend(1, 1);
+                            _entity._charAnimControl.SetFiring(true);
+                        }
+                    }
+                }
+                else
                 {
                     if (_entity._charAnimControl != null)
                     {
-                        _entity._charAnimControl.PlayAnimation(moveVelocity);
-                        _entity._charAnimControl.SetBlend(1, 1);
-                        _entity._charAnimControl.SetFiring(true);
+                        _entity._charAnimControl.SetBlend(1, 0);
+                        _entity._charAnimControl.SetDeath(true);
                     }
                 }
             }
@@ -90,21 +103,12 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (_entity._charAnimControl != null)
                 {
-                    _entity._charAnimControl.SetBlend(1, 0);
-                    _entity._charAnimControl.SetDeath(true);
+                    if (!_entity.isAlive)
+                        _entity._charAnimControl.SetDeath(true);
+
                 }
             }
         }
-        else
-        {
-            if (_entity._charAnimControl != null)
-            {
-                if(!_entity.isAlive)
-                _entity._charAnimControl.SetDeath(true);
-                
-            }
-        }
-
     }
 
     private void IsOnGround()
